@@ -40,7 +40,7 @@ const Homepage = () => {
       <div>
 
       </div>
-      <Emailverify/>
+      {!toggle ? <Emailverify/> : null}
     </>
   )
 }

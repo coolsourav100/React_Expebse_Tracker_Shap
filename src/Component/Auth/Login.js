@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classes from './Login.module.css'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate()
@@ -99,12 +99,13 @@ setToggle(!toggle)
                         <label className="form-label" for="form3Example4c">Password</label>
                       </div>
                     </div>
+                    { !toggle ? 
                     <div className="form-check d-flex justify-content-center mb-5">
-                      <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                      {/* <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3c" /> */}
                       <label className="form-check-label" for="form2Example3">
-                        I agree all statements in <a href="#!">Terms of service</a>
+                        <Link to='forgetpassword'>Forget Password</Link>
                       </label>
-                    </div>
+                    </div> : null}
   
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" className="btn btn-primary btn-lg" disabled={!enterpassword ^ !enteremail}>{ toggle ? `Register` : `LogIn`}</button>
