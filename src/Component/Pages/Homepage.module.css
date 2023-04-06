@@ -1,0 +1,10 @@
+.profile{
+    background-color: rgb(236, 214, 184);
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+span{
+    text-decoration: underline;
+    color: blue;
+}

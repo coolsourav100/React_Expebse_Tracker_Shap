@@ -40,7 +40,7 @@ setToggle(!toggle)
     
       fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
         method:'POST',
-        body:JSON.stringify({email:enteremail, password:enterpassword , displayName: enterName , returnSecureToken:true}) ,
+        body:JSON.stringify({email:enteremail, password:enterpassword , userName: enterName , returnSecureToken:true}) ,
         headers:{
           'Content-Type': 'application/json'
         }
