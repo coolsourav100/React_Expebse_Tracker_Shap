@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const UpdateProfilePage = () => {
+const UpdateProfilePage = (props) => {
     
     const [fullName , setFullName] = useState('')
     const [imgurl , setImgurl] = useState('')
+    
+    useEffect(()=>{
+        fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
+            method:'POST',
+            body:JSON.stringify({idToken:localStorage.getItem('token')})
+        }).then((res)=>res.json())
+        .then((res)=>{
+            console.log(res)
+            setFullName(res.users[0].displayName)
+            setImgurl(res.users[0].photoUrl)
+        })
+        
+    },[])
+
 
     const updateHandler =(e)=>{
         // console.log(localStorage.getItem('token'))
@@ -26,13 +40,14 @@ const UpdateProfilePage = () => {
             window.alert('Profile has been Updated Succesfully')
             console.log(res)
         })
+        props.addToggle()
 
     }
   return (
     <div className='container mt-4'>
         <form className='form' onSubmit={updateHandler}>
             <div className='row'>
-                <div className='col-4 d-flex'>
+                <div className='col-md-4 d-flex'>
                 <div>
                 <label className='form-label'>Full Name</label>
                 </div>
