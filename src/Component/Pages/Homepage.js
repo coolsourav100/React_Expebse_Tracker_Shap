@@ -6,7 +6,8 @@ import LogOut from '../UI/LogOut';
 
 const Homepage = () => {
   const [ toggle,setToggele] = useState(false)
-  const [userData , setUserData] = useState(false)
+  const [userData , setUserData] = useState(false);
+  const[emailVerify,setEmailVerify] = useState('')
   useEffect(()=>{
    (async()=>await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
             method:'POST',
@@ -19,7 +20,10 @@ const Homepage = () => {
         }))();
         return ()=>{}
   },[toggle])
-  console.log(toggle ,'toogggggg')
+  
+  const emailverifyHandler=(data)=>{
+    setEmailVerify(data)
+  }
   return (
     <>
       <div className='d-flex justify-content-between'>
@@ -35,12 +39,12 @@ const Homepage = () => {
       
       
       <div className='container'>
-      {toggle ? <UpdateProfilePage addToggle={()=>setToggele(!toggle)}/> : null}
+      {toggle ? <UpdateProfilePage addEmailVerify={emailverifyHandler} addToggle={()=>setToggele(!toggle)}/> : null}
       </div>
       <div>
 
       </div>
-      {!toggle ? <Emailverify/> : null}
+      {!toggle ?<> {!emailVerify ? <Emailverify/>: null}</>: null}
     </>
   )
 }

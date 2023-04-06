@@ -4,6 +4,7 @@ const UpdateProfilePage = (props) => {
     
     const [fullName , setFullName] = useState('')
     const [imgurl , setImgurl] = useState('')
+    const [verifyEmail , setVerifyEmail] = useState(false)
     
     useEffect(()=>{
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
@@ -11,9 +12,10 @@ const UpdateProfilePage = (props) => {
             body:JSON.stringify({idToken:localStorage.getItem('token')})
         }).then((res)=>res.json())
         .then((res)=>{
-            console.log(res)
+            console.log(res,'update')
             setFullName(res.users[0].displayName)
             setImgurl(res.users[0].photoUrl)
+            setVerifyEmail(res.users[0].emailVerified)
         })
         
     },[])
@@ -38,9 +40,10 @@ const UpdateProfilePage = (props) => {
           })
         .then((res)=>{
             window.alert('Profile has been Updated Succesfully')
-            console.log(res)
+            // console.log(res)
         })
         props.addToggle()
+        props.addEmailVerify(verifyEmail)
 
     }
   return (
