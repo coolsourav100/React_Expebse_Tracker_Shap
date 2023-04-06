@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import classes from './Login.module.css'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate()
  const [ toggle , setToggle] = useState(false)
  const [enterName , setEnterName] = useState('')
  const [enteremail , setEnterEmail] = useState('')
@@ -29,15 +31,16 @@ setToggle(!toggle)
         }
       }).then((res)=>{
         console.log(res)
-        localStorage.setItem('email', res.email)
+        localStorage.setItem('token',res.idToken)
         window.alert('LogIn Successful !!!')
+        navigate('/home')
       })
     
     }else{
     
       fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
         method:'POST',
-        body:JSON.stringify({email:enteremail, password:enterpassword , userName: enterName , returnSecureToken:true}) ,
+        body:JSON.stringify({email:enteremail, password:enterpassword , displayName: enterName , returnSecureToken:true}) ,
         headers:{
           'Content-Type': 'application/json'
         }
@@ -51,12 +54,15 @@ setToggle(!toggle)
       }).then((res)=>{
         console.log(res)
         window.alert('Sing Up successfull !!!')
+        localStorage.setItem('token',res.idToken)
+        navigate('/home')
       })
     }
       
   }
   return (
     <div>
+      
         <section className="vh-100">
     <div className="container h-100">
       <div className="row d-flex justify-content-center align-items-center h-100">
