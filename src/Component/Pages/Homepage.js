@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classes from './Homepage.module.css'
 import UpdateProfilePage from './UpdateProfilePage';
 import Emailverify from '../UI/Emailverify';
+import LogOut from '../UI/LogOut';
 
 const Homepage = () => {
   const [ toggle,setToggele] = useState(false)
@@ -20,13 +21,19 @@ const Homepage = () => {
   },[toggle])
   console.log(toggle ,'toogggggg')
   return (
-    <div>
+    <>
       <div className='d-flex justify-content-between'>
         <h1>Welcome to Alpha Expence Tracker</h1>
+        <div className='d-flex flex-row-reverse'>
+      <LogOut/>
         {!toggle ? <div className={classes.profile}>
-        <h4 className='me-2' onClick={()=>setToggele(!toggle)}>{userData ? <span>Edit your Profile</span> : <>Your Profile is incomplete. <span>Complete Now</span></>}</h4>
+        
+        <h4 className='me-2 px-2' onClick={()=>setToggele(!toggle)}>{userData ? <span>Edit your Profile</span> : <>Your Profile is incomplete. <span>Complete Now</span></>}</h4>
         </div> : null}
       </div>
+      </div>
+      
+      
       <div className='container'>
       {toggle ? <UpdateProfilePage addToggle={()=>setToggele(!toggle)}/> : null}
       </div>
@@ -34,7 +41,7 @@ const Homepage = () => {
 
       </div>
       <Emailverify/>
-    </div>
+    </>
   )
 }
 
