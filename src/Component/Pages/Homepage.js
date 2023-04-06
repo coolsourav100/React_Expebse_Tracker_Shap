@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Homepage.module.css'
 import UpdateProfilePage from './UpdateProfilePage';
+import Emailverify from '../UI/Emailverify';
 
 const Homepage = () => {
   const [ toggle,setToggele] = useState(false)
@@ -29,6 +30,10 @@ const Homepage = () => {
       <div className='container'>
       {toggle ? <UpdateProfilePage addToggle={()=>setToggele(!toggle)}/> : null}
       </div>
+      <div>
+
+      </div>
+      <Emailverify/>
     </div>
   )
 }
