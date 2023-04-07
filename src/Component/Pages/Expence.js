@@ -30,14 +30,32 @@ useEffect(()=>{
 
     const submitHandler=async(e)=>{
       e.preventDefault();
-      console.log(expenceData)
       await axios.post(`https://etshapreact-default-rtdb.asia-southeast1.firebasedatabase.app/expence.json`,expenceData)
       .then(res=>console.log(res,'expence sent res'))
       .catch(err=>console.log(err, 'expence sent error'))
       setToggle(!toggle)
+      setExpenceData({category:'',date:'',des:'', amount:0})
     }
-    console.log(resData)
-    // console.log(key,'key')
+    const editHandler=async(id)=>{
+      console.log(id,resData[id].date)
+      await axios.delete(`https://etshapreact-default-rtdb.asia-southeast1.firebasedatabase.app/expence/${id}.json`)
+      .then(res=>{
+        
+        setExpenceData({category:resData[id].category,date:resData[id].date,des:resData[id].des, amount:resData[id].amount})
+        console.log(res,'edit res')
+      })
+      .catch(err=>console.log(err, 'edit error'))
+      setToggle(!toggle)
+    }
+
+    const deleteHandler=async(id)=>{
+      await axios.delete(`https://etshapreact-default-rtdb.asia-southeast1.firebasedatabase.app/expence/${id}.json`)
+      .then(res=>window.alert('Delete Successfully'))
+      .catch(err=>console.log(err, 'delete error'))
+      setToggle(!toggle)
+
+      
+    }
   return (
     <div>
         <div className='d-flex row'>
@@ -47,26 +65,27 @@ useEffect(()=>{
   <div class="form-row">
     <div class="form-group col-md-6">
       <label >Date</label>
-      <input type="date" class="form-control" name='date'  placeholder="Date" onChange={changeHandler}/>
+      <input type="date" class="form-control" name='date' value={expenceData.date}  placeholder="Date" onChange={changeHandler} required/>
     </div>
     <div class="form-group col-md-6">
       <label >CateGory</label>
-      <select class="form-control" onChange={changeHandler} name='category'>
-        <option>Food</option>
-        <option>Petrol</option>
-        <option>Transportion</option>
-        <option>Room Rent</option>
-        <option>Others</option>
+      <select class="form-control" value={expenceData.category} onChange={changeHandler} name='category' required>
+        <option>{`<-- Select -->`}</option>
+        <option value='Food'>Food</option>
+        <option value='Petrol'>Petrol</option>
+        <option value='Transportion'>Transportion</option>
+        <option value='Room Rent'>Room Rent</option>
+        <option value='Others'>Others</option>
       </select>
     </div>
   </div>
   <div class="form-group">
     <label for="inputAddress">Description</label>
-    <input type="text" class="form-control" name='des'  placeholder="Description" onChange={changeHandler}/>
+    <input type="text" class="form-control" name='des' value={expenceData.des} placeholder="Description" onChange={changeHandler} required/>
   </div>
   <div class="form-group">
     <label for="inputAddress2">Amount</label>
-    <input type="number" class="form-control" name='amount' placeholder="Amount" onChange={changeHandler}/>
+    <input type="number" class="form-control" name='amount' value={expenceData.amount} placeholder="Amount" onChange={changeHandler} required/>
   </div>
   <button type="submit" class="btn btn-primary mt-4">Add Expence</button>
 </form>
@@ -98,16 +117,16 @@ useEffect(()=>{
       <td>{category}</td>
       <td>{des}</td>
       <td>{`₹ ${amount}`}</td>
-      {/* <td>
-        <button className='btn btn-success'>Edit</button>
-        <button className='btn btn-danger ms-4'>Delete</button>
-      </td> */}
+      <td>
+        <button className='btn btn-success' onClick={()=>editHandler(item)}>Edit</button>
+        <button className='btn btn-danger ms-4'onClick={()=>deleteHandler(item)}>Delete</button>
+      </td>
     </tr>
       )
     })}
     
     <th scope='row'>Total</th>
-    <td colspan="3"></td>
+    <td colspan="4"></td>
     <td colspan="1">Total ₹ {` ${price}`}</td>
   </tbody>
 
