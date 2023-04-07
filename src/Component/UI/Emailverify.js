@@ -10,11 +10,16 @@ const Emailverify = () => {
                 headers:{
                     'Content-Type': 'application/json'
                 }
-            }).then((res)=>res.json())
+            }).then(res=>{
+              if(res.ok){
+                return res.json()
+              }else{
+                return res.json().then((data)=>window.alert(data.error.message))
+              }})
             .then((res)=>{
                 console.log(res,'email res')
+                window.alert('Email Veification Link Has been Sent')
             })
-            .catch((res)=>console.log(res,'email error'))
     }
   return (
     <div className='container mt-4'>

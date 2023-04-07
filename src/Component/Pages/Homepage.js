@@ -3,31 +3,37 @@ import classes from './Homepage.module.css'
 import UpdateProfilePage from './UpdateProfilePage';
 import Emailverify from '../UI/Emailverify';
 import LogOut from '../UI/LogOut';
+import { Link } from 'react-router-dom';
 
 const Homepage = () => {
   const [ toggle,setToggele] = useState(false)
   const [userData , setUserData] = useState(false);
   const[emailVerify,setEmailVerify] = useState('')
   useEffect(()=>{
-   (async()=>await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
+   (async()=>{
+   await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
             method:'POST',
             body:JSON.stringify({idToken:localStorage.getItem('token')})
         }).then((res)=>res.json())
         .then((res)=>{
-            if(res.users[0].displayName.length > 0 && res.users[0].photoUrl.length > 0){
+          console.log(res,'userData')
+            if(res.users[0].displayName?.length > 0 && res.users[0].photoUrl?.length > 0){
               setUserData(true)
+              setEmailVerify(res.users[0].emailVerified)
             }
-        }))();
+        }) 
+        
+      })();
         return ()=>{}
   },[toggle])
   
-  const emailverifyHandler=(data)=>{
-    setEmailVerify(data)
-  }
   return (
     <>
       <div className='d-flex justify-content-between'>
+        <div className='row'>
         <h1>Welcome to Alpha Expence Tracker</h1>
+        <div className={`${classes.expence} col-3`}><Link to='/expence'><p>Expence</p></Link></div>
+        </div>
         <div className='d-flex flex-row-reverse'>
       <LogOut/>
         {!toggle ? <div className={classes.profile}>
@@ -39,7 +45,7 @@ const Homepage = () => {
       
       
       <div className='container'>
-      {toggle ? <UpdateProfilePage addEmailVerify={emailverifyHandler} addToggle={()=>setToggele(!toggle)}/> : null}
+      {toggle ? <UpdateProfilePage addToggle={()=>setToggele(!toggle)}/> : null}
       </div>
       <div>
 

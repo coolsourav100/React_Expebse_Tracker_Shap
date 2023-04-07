@@ -1,0 +1,25 @@
+.add{
+    background-color: rgba(157, 243, 243, 0.863);
+    margin-top: 20px;
+    border:1px solid rgb(20, 167, 235);
+    border-radius: 5px;
+    padding: 10px;
+
+}
+.add h4{
+    color: darkblue;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.list{
+    background-color: rgb(200, 236, 240);
+    border: 1px solid rgb(20, 172, 199);
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.list h4{
+    color: darkblue;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
