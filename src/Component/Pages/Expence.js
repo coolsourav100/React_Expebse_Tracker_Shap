@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Expence.module.css'
 import axios from 'axios';
+import LogOut from '../UI/LogOut';
 
 const Expence = () => {
   const [ toggle , setToggle ] = useState(false)
@@ -58,6 +59,7 @@ useEffect(()=>{
     }
   return (
     <div>
+      <div className='d-flex justify-content-end'><LogOut/></div>
         <div className='d-flex row'>
             <div className={` ${classes.add} container col-2`}>
                 <h4> Add Your Expence</h4>
