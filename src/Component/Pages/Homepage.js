@@ -10,6 +10,7 @@ import { authAction } from '../Store/AuthReducer';
 const Homepage = () => {
   const dispatch = useDispatch()
   const authData = useSelector((state)=>state.auth)
+  console.log(authData,'authData')
   const [ toggle,setToggele] = useState(false)
   const [userData , setUserData] = useState(false);
   const[emailVerify,setEmailVerify] = useState('')
@@ -17,13 +18,12 @@ const Homepage = () => {
    (async()=>{
    await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
             method:'POST',
-            body:JSON.stringify({idToken:localStorage.getItem('token')})
+            body:JSON.stringify({idToken:authData.token})
         }).then((res)=>res.json())
         .then((res)=>{
           console.log(res,'userData')
-            if(res.users[0].displayName?.length > 0 && res.users[0].photoUrl?.length > 0){
+            if(res.users[0]?.displayName?.length > 0 && res.users[0]?.photoUrl?.length > 0){
               setUserData(true)
-              // setEmailVerify(res.users[0].emailVerified)
               dispatch(authAction.emailVerifyUpdater(true))
               
             }

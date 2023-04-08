@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import classes from './Expence.module.css'
 import axios from 'axios';
 import LogOut from '../UI/LogOut';
+import { useDispatch, useSelector } from 'react-redux';
+import { exenceAction } from '../Store/expenceReducer';
+import LockIcon from '../../Icon/LockIcon';
+import UnLockIn from '../../Icon/UnLockIn';
+
+
 
 const Expence = () => {
+  const userExData = useSelector(state=>state.expence)
+  const dispatch = useDispatch()
   const [ toggle , setToggle ] = useState(false)
   const [ expenceData , setExpenceData] = useState({category:'',date:'',des:'', amount:0})
   const [resData , setResData] = useState([]);
@@ -14,15 +22,21 @@ useEffect(()=>{
   (async()=>{
     await axios.get('https://etshapreact-default-rtdb.asia-southeast1.firebasedatabase.app/expence.json')
     .then(res=>{
-      console.log(res,'data recived')
-    setResData(res.data)
-   setKey(Object.keys(res.data))
+    dispatch(exenceAction.expenceUpdater(res.data))
+  setKey(Object.keys(userExData.expenceData))
+  dispatch(exenceAction.keyUpdater(Object.keys(res.data)))
     })
     .catch(err=>console.log(err))
   })();
-
   return ()=>{}
 },[toggle])
+
+const p = userExData.key.map((item , index)=>Number(userExData.expenceData[item].amount))
+let sum = 0 ;
+for(let i=0;i<p.length;i++){
+  sum+=p[i]
+}
+
 
     const changeHandler=(e)=>{
       e.preventDefault();
@@ -38,12 +52,11 @@ useEffect(()=>{
       setExpenceData({category:'',date:'',des:'', amount:0})
     }
     const editHandler=async(id)=>{
-      console.log(id,resData[id].date)
+      
       await axios.delete(`https://etshapreact-default-rtdb.asia-southeast1.firebasedatabase.app/expence/${id}.json`)
       .then(res=>{
         
-        setExpenceData({category:resData[id].category,date:resData[id].date,des:resData[id].des, amount:resData[id].amount})
-        console.log(res,'edit res')
+        setExpenceData({category:userExData.expenceData[id].category,date:userExData.expenceData[id].date,des:userExData.expenceData[id].des, amount:userExData.expenceData[id].amount})
       })
       .catch(err=>console.log(err, 'edit error'))
       setToggle(!toggle)
@@ -54,12 +67,18 @@ useEffect(()=>{
       .then(res=>window.alert('Delete Successfully'))
       .catch(err=>console.log(err, 'delete error'))
       setToggle(!toggle)
-
-      
     }
+    
   return (
     <div>
-      <div className='d-flex justify-content-end'><LogOut/></div>
+
+      <div className='d-flex justify-content-end'>
+      <div className='d-flex'>
+     {sum>=10000 && <UnLockIn/>}
+      {sum<10000 &&<LockIcon/>}
+      <LogOut/>
+      </div>
+      </div>
         <div className='d-flex row'>
             <div className={` ${classes.add} container col-2`}>
                 <h4> Add Your Expence</h4>
@@ -106,11 +125,14 @@ useEffect(()=>{
     </tr>
   </thead>
   <tbody>
-    {key.map((item , index)=>{
-      let date = resData[item].date
-      let amount = Number(resData[item].amount)
-      let des = resData[item].des
-      let category = resData[item].category
+    {userExData.key.map((item , index)=>{
+      let date = userExData.expenceData[item].date
+      let amount = Number(userExData.expenceData[item].amount)
+      // console.log(amount)
+      // dispatch(exenceAction.priceUpdater(amount))
+      
+      let des = userExData.expenceData[item].des
+      let category = userExData.expenceData[item].category
       price +=amount
       return (
     <tr>
@@ -124,6 +146,7 @@ useEffect(()=>{
         <button className='btn btn-danger ms-4'onClick={()=>deleteHandler(item)}>Delete</button>
       </td>
     </tr>
+    
       )
     })}
     

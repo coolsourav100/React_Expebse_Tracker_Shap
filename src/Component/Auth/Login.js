@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import classes from './Login.module.css'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authAction } from '../Store/AuthReducer';
 
 const Login = () => {
+  const authData = useSelector(state=>state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
  const [ toggle , setToggle] = useState(false)
@@ -18,7 +19,7 @@ setToggle(!toggle)
 
   const submitHandler=(e)=>{
     e.preventDefault();
-    if(!toggle){
+    if(!authData.isLoggIn){
       fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
         method:'POST',
         body:JSON.stringify({email:enteremail, password:enterpassword ,returnSecureToken:true}) ,
@@ -35,7 +36,6 @@ setToggle(!toggle)
       }).then((res)=>{
         console.log(res)
         dispatch(authAction.logIn())
-        // localStorage.setItem('token',res.idToken)
         dispatch(authAction.tokenUpdater(res.idToken))
         window.alert('LogIn Successful !!!')
         navigate('/home')
@@ -59,7 +59,8 @@ setToggle(!toggle)
       }).then((res)=>{
         console.log(res)
         window.alert('Sing Up successfull !!!')
-        localStorage.setItem('token',res.idToken)
+        dispatch(authAction.logIn())
+        dispatch(authAction.tokenUpdater(res.idToken))
         navigate('/home')
       })
     }
