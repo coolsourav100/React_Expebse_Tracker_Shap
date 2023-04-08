@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const UpdateProfilePage = (props) => {
+    const authData = useSelector((state)=>state.auth)
+    
     
     const [fullName , setFullName] = useState('')
     const [imgurl , setImgurl] = useState('')
@@ -9,7 +12,7 @@ const UpdateProfilePage = (props) => {
     useEffect(()=>{
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
             method:'POST',
-            body:JSON.stringify({idToken:localStorage.getItem('token')})
+            body:JSON.stringify({idToken:authData.token})
         }).then((res)=>res.json())
         .then((res)=>{
             console.log(res,'update')
@@ -26,7 +29,7 @@ const UpdateProfilePage = (props) => {
         e.preventDefault();
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDKk-EwRrMKKHBYl4L-cqXdab47ev2cetw',{
             method:'POST',
-            body: JSON.stringify({idToken : localStorage.getItem('token'),displayName:fullName , photoUrl:imgurl ,returnSecureToken: true }) ,
+            body: JSON.stringify({idToken :authData.token,displayName:fullName , photoUrl:imgurl ,returnSecureToken: true }) ,
             headers:{
                 'Content-Type': 'application/json' 
             }

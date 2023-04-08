@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import classes from './Login.module.css'
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { authAction } from '../Store/AuthReducer';
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
  const [ toggle , setToggle] = useState(false)
  const [enterName , setEnterName] = useState('')
@@ -31,7 +34,9 @@ setToggle(!toggle)
         }
       }).then((res)=>{
         console.log(res)
-        localStorage.setItem('token',res.idToken)
+        dispatch(authAction.logIn())
+        // localStorage.setItem('token',res.idToken)
+        dispatch(authAction.tokenUpdater(res.idToken))
         window.alert('LogIn Successful !!!')
         navigate('/home')
       })

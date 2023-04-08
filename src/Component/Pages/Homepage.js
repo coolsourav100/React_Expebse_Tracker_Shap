@@ -4,8 +4,12 @@ import UpdateProfilePage from './UpdateProfilePage';
 import Emailverify from '../UI/Emailverify';
 import LogOut from '../UI/LogOut';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { authAction } from '../Store/AuthReducer';
 
 const Homepage = () => {
+  const dispatch = useDispatch()
+  const authData = useSelector((state)=>state.auth)
   const [ toggle,setToggele] = useState(false)
   const [userData , setUserData] = useState(false);
   const[emailVerify,setEmailVerify] = useState('')
@@ -19,7 +23,9 @@ const Homepage = () => {
           console.log(res,'userData')
             if(res.users[0].displayName?.length > 0 && res.users[0].photoUrl?.length > 0){
               setUserData(true)
-              setEmailVerify(res.users[0].emailVerified)
+              // setEmailVerify(res.users[0].emailVerified)
+              dispatch(authAction.emailVerifyUpdater(true))
+              
             }
         }) 
         
@@ -50,7 +56,7 @@ const Homepage = () => {
       <div>
 
       </div>
-      {!toggle ?<> {!emailVerify ? <Emailverify/>: null}</>: null}
+      {!toggle ?<> {!authData.emailVerify ? <Emailverify/>: null}</>: null}
     </>
   )
 }
