@@ -6,17 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { exenceAction } from '../Store/expenceReducer';
 import LockIcon from '../../Icon/LockIcon';
 import UnLockIn from '../../Icon/UnLockIn';
+import { CSVLink } from 'react-csv';
+import { authAction } from '../Store/AuthReducer';
+
 
 
 
 const Expence = () => {
   const userExData = useSelector(state=>state.expence)
+  const authData = useSelector(state=>state.auth)
+
+
   const dispatch = useDispatch()
   const [ toggle , setToggle ] = useState(false)
   const [ expenceData , setExpenceData] = useState({category:'',date:'',des:'', amount:0})
   const [resData , setResData] = useState([]);
   const [key , setKey] = useState([])
   let price =0
+  const headers =['Date','CateGory','>Description','Amount']
   
 useEffect(()=>{
   (async()=>{
@@ -28,13 +35,21 @@ useEffect(()=>{
     })
     .catch(err=>console.log(err))
   })();
-  return ()=>{}
+
+return ()=>{}
 },[toggle])
 
-const p = userExData.key.map((item , index)=>Number(userExData.expenceData[item].amount))
+if(authData.ttoggle){
+  document.body.className = 'dark-theam'
+}else{
+  document.body.className = ''
+}
+
+const q = userExData.key.map((item,index)=>userExData.expenceData[item])
+
 let sum = 0 ;
-for(let i=0;i<p.length;i++){
-  sum+=p[i]
+for(let i=0;i<q.length;i++){
+  sum+=Number(q[i].amount)
 }
 
 
@@ -75,6 +90,7 @@ for(let i=0;i<p.length;i++){
       <div className='d-flex justify-content-end'>
       <div className='d-flex'>
      {sum>=10000 && <UnLockIn/>}
+     {sum>=10000 && <button className='btn btn-dark me-2' onClick={()=>dispatch(authAction.toggleUpdater())}> {!authData.ttoggle ? 'Dark' : 'Light'} </button>}
       {sum<10000 &&<LockIcon/>}
       <LogOut/>
       </div>
@@ -160,6 +176,9 @@ for(let i=0;i<p.length;i++){
 
             </div>
         </div>
+<div className='d-flex justify-content-center mt-4'>
+       <CSVLink className='btn btn-outline-dark' data={q}>Download CSV</CSVLink>
+       </div>
     </div>
   )
 }

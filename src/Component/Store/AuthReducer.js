@@ -4,7 +4,8 @@ const authState={
     isLoggedIn:false,
     token:'',
     userId:'',
-    emailVerify:false
+    emailVerify:false,
+    ttoggle:false
 }
 
 const authSlice = createSlice({
@@ -25,6 +26,9 @@ const authSlice = createSlice({
         },
         emailVerifyUpdater(state,action){
             state.emailVerify = action.payload
+        },
+        toggleUpdater(state){
+            state.ttoggle = !state.ttoggle
         }
     }
 })

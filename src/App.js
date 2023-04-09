@@ -4,6 +4,7 @@ import Home from './Component/Pages/Homepage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ForgetPassword from './Component/Pages/ForgetPassword';
 import Expence from './Component/Pages/Expence';
+import './App.css'
 
 
 

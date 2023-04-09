@@ -1,0 +1,26 @@
+
+.dark-theam{
+  --main-heading : #5f99be;
+  --para-clr:#fff;
+  --btn-bg-color:#5f99be;
+  --btn-text-color:#fff;
+  --bg-color:#111b20
+}
+.light-theam{
+  --main-heading : #5f99be;
+  --para-clr:#333;
+  --btn-bg-color:#111b20;
+  --btn-text-color:#fff;
+  --bg-color:#fff
+}
+
+h1{
+  color: var(--main-heading);
+}
+*{
+  background:var(--bg-color);
+  color:var(--btn-text-color)
+}
+button{
+  color: var(--btn-text-color);
+}
